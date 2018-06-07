@@ -128,8 +128,8 @@ class Modmail(commands.Bot):
     def help_embed(self, prefix):
         em = discord.Embed(color=0x00FFFF)
         em.set_author(name='Mod Mail - Help', icon_url=self.user.avatar_url)
-        em.description = 'Dieser Bot wurde in Python programmiert ' \
-                         'Wurde von Neax ins Deutsche übersetzt und auch etwas gecodet ' \
+        em.description = 'Dieser Bot wurde in Python programmiert. \n ' \
+                         'Wurde von Neax ins Deutsche übersetzt und auch etwas gecodet.\n ' \
                          'Es werden keine Chatverläufe gespeichert.' 
                  
 
