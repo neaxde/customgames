@@ -137,7 +137,7 @@ class Modmail(commands.Bot):
                f'`{prefix}reply <message...>` - Schickt eine Antwort zu dem User.\n' \
                f'`{prefix}close` - Schließt den Chat.\n' \
                f'`{prefix}disable` - Setzt den Bot zurück.\n' \
-               f'`{prefix}customstatus` - Stellt das Spiel ein, was der Bot spielt.' \
+               f'`{prefix}customstatus` - Stellt das Spiel ein, was der Bot spielt.\n' \
                f'`{prefix}block` - Blockt ein User vom ModMailing.\n' \
                f'`{prefix}unblock` - Unblockt ein User vom ModMailing.'
 
