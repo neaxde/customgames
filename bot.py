@@ -145,8 +145,6 @@ class Modmail(commands.Bot):
                'Ändern der Channelüberschrift ebenfalls!'
         em.add_field(name='Commands', value=cmds)
         em.add_field(name='Warning', value=warn)
-        em.add_field(name='Github', value='https://github.com/neaxde/customgames')
-        em.set_footer(text='Made by Neax!')
 
         return em
 
