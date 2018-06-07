@@ -138,8 +138,8 @@ class Modmail(commands.Bot):
                f'`{prefix}close` - Schließt den Chat.\n' \
                f'`{prefix}disable` - Setzt den Bot zurück.\n' \
                f'`{prefix}customstatus` - Stellt das Spiel ein, was der Bot spielt.' \
-               f'`{prefix}block` - Blockt ein User vom ModMailing' \
-               f'`{prefix}unblock` - Unblockt ein User vom ModMailing'
+               f'`{prefix}block` - Blockt ein User vom ModMailing.\n' \
+               f'`{prefix}unblock` - Unblockt ein User vom ModMailing.'
 
         warn = 'Bitte nicht die Channel Namen ändern, das macht das System kaputt! ' \
                'Ändern der Channelüberschrift ebenfalls!'
