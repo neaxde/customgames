@@ -1,26 +1,3 @@
-'''
-MIT License
-
-Copyright (c) 2017 Kyb3r
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-'''
 
 GUILD_ID = 0 # your guild id here
 
@@ -127,7 +104,7 @@ class Modmail(commands.Bot):
         ---------------
         Client is ready!
         ---------------
-        Author: Kyb3r#7220
+        Author: neax#6193
         ---------------
         Logged in as: {self.user}
         User ID: {self.user.id}
@@ -151,25 +128,25 @@ class Modmail(commands.Bot):
     def help_embed(self, prefix):
         em = discord.Embed(color=0x00FFFF)
         em.set_author(name='Mod Mail - Help', icon_url=self.user.avatar_url)
-        em.description = 'This bot is a python implementation of a stateless "Mod Mail" bot. ' \
-                         'Made by Kyb3r and improved by the suggestions of others. This bot ' \
-                         'saves no data and utilises channel topics for storage and syncing.' 
+        em.description = 'Dieser Bot wurde in Python programmiert ' \
+                         'Wurde von Neax ins Deutsche übersetzt und auch etwas gecodet ' \
+                         'Es werden keine Chatverläufe gespeichert.' 
                  
 
-        cmds = f'`{prefix}setup [modrole] <- (optional)` - Command that sets up the bot.\n' \
-               f'`{prefix}reply <message...>` - Sends a message to the current thread\'s recipient.\n' \
-               f'`{prefix}close` - Closes the current thread and deletes the channel.\n' \
-               f'`{prefix}disable` - Closes all threads and disables modmail for the server.\n' \
-               f'`{prefix}customstatus` - Sets the Bot status to whatever you want.' \
-               f'`{prefix}block` - Blocks a user from using modmail!' \
-               f'`{prefix}unblock` - Unblocks a user from using modmail!'
+        cmds = f'`{prefix}setup [modrole] <- (optional)` - Setup den Server.\n' \
+               f'`{prefix}reply <message...>` - Schickt eine Antwort zu dem User.\n' \
+               f'`{prefix}close` - Schließt den Chat.\n' \
+               f'`{prefix}disable` - Setzt den Bot zurück.\n' \
+               f'`{prefix}customstatus` - Stellt das Spiel ein, was der Bot spielt.' \
+               f'`{prefix}block` - Blockt ein User vom ModMailing' \
+               f'`{prefix}unblock` - Unblockt ein User vom ModMailing'
 
-        warn = 'Do not manually delete the category or channels as it will break the system. ' \
-               'Modifying the channel topic will also break the system.'
+        warn = 'Bitte nicht die Channel Namen ändern, das macht das System kaputt! ' \
+               'Ändern der Channelüberschrift ebenfalls!'
         em.add_field(name='Commands', value=cmds)
         em.add_field(name='Warning', value=warn)
-        em.add_field(name='Github', value='https://github.com/verixx/modmail')
-        em.set_footer(text='Star the repository to unlock hidden features!')
+        em.add_field(name='Github', value='https://github.com/neaxde/customgames')
+        em.set_footer(text='Made by Neax!')
 
         return em
 
@@ -178,7 +155,7 @@ class Modmail(commands.Bot):
     async def setup(self, ctx, *, modrole: discord.Role=None):
         '''Sets up a server for modmail'''
         if discord.utils.get(ctx.guild.categories, name='Mod Mail'):
-            return await ctx.send('This server is already set up.')
+            return await ctx.send('Dieser Server ist schon aufgestellt!')
 
         categ = await ctx.guild.create_category(
             name='Mod Mail', 
@@ -189,7 +166,7 @@ class Modmail(commands.Bot):
         await c.edit(topic='Manually add user id\'s to block users.\n\n'
                            'Blocked\n-------\n\n')
         await c.send(embed=self.help_embed(ctx.prefix))
-        await ctx.send('Successfully set up server.')
+        await ctx.send('Der Server wurde Erfolgreich aufgestellt!')
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -197,17 +174,17 @@ class Modmail(commands.Bot):
         '''Close all threads and disable modmail.'''
         categ = discord.utils.get(ctx.guild.categories, name='Mod Mail')
         if not categ:
-            return await ctx.send('This server is not set up.')
+            return await ctx.send('Dieser Server ist noch nicht aufgestellt!')
         for category, channels in ctx.guild.by_category():
             if category == categ:
                 for chan in channels:
                     if 'User ID:' in str(chan.topic):
                         user_id = int(chan.topic.split(': ')[1])
                         user = self.get_user(user_id)
-                        await user.send(f'**{ctx.author}** has closed this modmail session.')
+                        await user.send(f'**{ctx.author}** hat den Modmail Chat geschlossen!')
                     await chan.delete()
         await categ.delete()
-        await ctx.send('Disabled modmail.')
+        await ctx.send('Ausgeschaltete Modmail')
 
 
     @commands.command(name='close')
@@ -215,11 +192,11 @@ class Modmail(commands.Bot):
     async def _close(self, ctx):
         '''Close the current thread.'''
         if 'User ID:' not in str(ctx.channel.topic):
-            return await ctx.send('This is not a modmail thread.')
+            return await ctx.send('Das ist kein Modmail chat')
         user_id = int(ctx.channel.topic.split(': ')[1])
         user = self.get_user(user_id)
         em = discord.Embed(title='Thread Closed')
-        em.description = f'**{ctx.author}** has closed this modmail session.'
+        em.description = f'**{ctx.author}** hat den Modmail Chat geschlossen!'
         em.color = discord.Color.red()
         try:
             await user.send(embed=em)
@@ -334,7 +311,7 @@ class Modmail(commands.Bot):
     @property
     def blocked_em(self):
         em = discord.Embed(title='Message not sent!', color=discord.Color.red())
-        em.description = 'You have been blocked from using modmail.'
+        em.description = 'Du wurdest Blockiert!.'
         return em
 
     async def process_modmail(self, message):
@@ -356,8 +333,8 @@ class Modmail(commands.Bot):
         if str(message.author.id) in blocked:
             return await message.author.send(embed=self.blocked_em)
 
-        em = discord.Embed(title='Thanks for the message!')
-        em.description = 'The moderation team will get back to you as soon as possible!'
+        em = discord.Embed(title='Danke für deine Nachricht!!')
+        em.description = 'Das Moderatoren Team wird sich deine Nachricht bald anschauen!'
         em.color = discord.Color.green()
 
         if channel is not None:
@@ -414,9 +391,9 @@ class Modmail(commands.Bot):
 
         if id not in top_chan.topic:  
             await top_chan.edit(topic=topic)
-            await ctx.send('User successfully blocked!')
+            await ctx.send('Der User wurde erfolgreich Blockiert')
         else:
-            await ctx.send('User is already blocked.')
+            await ctx.send('Der User ist schon Blockiert!')
 
     @commands.command()
     @commands.has_permissions(manage_channels=True)
@@ -426,7 +403,7 @@ class Modmail(commands.Bot):
             if 'User ID:' in str(ctx.channel.topic):
                 id = ctx.channel.topic.split('User ID: ')[1].strip()
             else:
-                return await ctx.send('No User ID provided.')
+                return await ctx.send('Keine UserID angegeben!')
 
         categ = discord.utils.get(ctx.guild.categories, name='Mod Mail')
         top_chan = categ.channels[0] #bot-info
@@ -435,9 +412,9 @@ class Modmail(commands.Bot):
 
         if id in top_chan.topic:
             await top_chan.edit(topic=topic)
-            await ctx.send('User successfully unblocked!')
+            await ctx.send('Der User wurde erfolgreich Freigegeben!')
         else:
-            await ctx.send('User is not already blocked.')
+            await ctx.send('Der User ist nicht Blockiert!.')
 
     @commands.command(hidden=True, name='eval')
     async def _eval(self, ctx, *, body: str):
